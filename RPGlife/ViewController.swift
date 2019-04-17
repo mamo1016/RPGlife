@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         save.set(0, forKey: "experience")//保存
         // スクリーンの横縦幅
         let screenWidth:CGFloat = self.view.frame.width
-        let screenHeight:CGFloat = self.view.frame.height
+//        let screenHeight:CGFloat = self.view.frame.height
         let _:CGFloat = self.view.frame.height
         gauge = screenWidth*4/5
         width = screenWidth*4/5

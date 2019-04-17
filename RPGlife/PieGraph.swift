@@ -3,7 +3,7 @@
 //  RPGlife
 //
 //  Created by 上田　護 on 2019/04/10.
-//  Copyright © 2019 mamoru.ueda. All rights reserved.
+//  Copyright © 2019 mamoru.ueda. All rights reserved.a
 //
 
 import UIKit
@@ -14,7 +14,7 @@ class PieGraph: UIView {
     var _end_angle:CGFloat!
     var d_end_angle:CGFloat!
     var preWork: Bool = false
-    var down: Bool = false
+    var ready: Bool = false
     let viewController = ViewController()
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -30,14 +30,11 @@ class PieGraph: UIView {
     
     
     @objc func update(link: CADisplayLink){
-        let angle = -CGFloat(Double.pi*2.0 / 1000.0)
-//        print(up)
+        let angle = -CGFloat(Double.pi*2.0 / 100.0)
+//        print("\(String(describing: _end_angle))","\(CGFloat(Double.pi))")
 //        if up {
 //            link.invalidate()
 //        }
-        if preWork != work{
-            link.invalidate()
-        }
         if work{
             _end_angle = _end_angle + angle
             print("decleace")
@@ -46,20 +43,33 @@ class PieGraph: UIView {
             _end_angle = _end_angle - angle
             print("increase")
         }
-        
-        if(_end_angle > CGFloat(Double.pi*2)) {
+
+        if(_end_angle > CGFloat(Double.pi*3/2)) {
 //            d_end_angle = _end_angle
-            _end_angle = CGFloat(Double.pi*2)
+            _end_angle = CGFloat(Double.pi*3/2)
+            ready = true
             print("out1")
             //終了
             link.invalidate()
-        } else  if  _end_angle < -CGFloat(Double.pi/2){
+        } else if _end_angle < -CGFloat(Double.pi/2){
             _end_angle = -CGFloat(Double.pi/2)
+            ready = true
             print("out2")
             //終了
             link.invalidate()
         }else{
+            print("in")
             self.setNeedsDisplay()
+
+            if ready{
+                
+            }else if preWork != work{
+                print("inOut")
+                link.invalidate()
+
+            }
+            ready = false
+
         }
         preWork = work
 
@@ -120,7 +130,7 @@ class PieGraph: UIView {
             }
             
             
-            var color:UIColor = dic["color"] as! UIColor
+//            var color:UIColor = dic["color"] as! UIColor
             
             context.move(to: CGPoint(x: x, y: y))
             context.addArc(center:  CGPoint(x:x,y:y), radius: radius, startAngle: start_angle, endAngle: end_angle, clockwise: false)
