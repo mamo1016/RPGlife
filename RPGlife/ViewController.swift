@@ -151,7 +151,7 @@ class ViewController: UIViewController {
         //右上と左下を角丸にする設定
         experienceView.layer.cornerRadius = 15
         experienceView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
-        print(experienceView.frame)
+//        print(experienceView.frame)
         
         // 生成したサイズを使って、ビューを生成
         experienceBackView = UIView(frame: CGRect(x:screenWidth/10,y:screenHeight*13/15,width:screenWidth-screenWidth/5,height:screenHeight/15))
@@ -212,17 +212,18 @@ class ViewController: UIViewController {
     //ボタンアクション
     @IBAction func workBtn(sender: AnyObject) {
         work = !work
+//        up = true
         graphView.startAnimating()
         if work {
 //            graphView.decleaseAnimating()
-            print("push work")
+//            print("push work")
             buttonArray[0].setTitle("休む", for: UIControl.State.normal)
             buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.4, blue: 0.1, alpha: 1)
 //            if let deta = save.object(forKey: "experience") { experienceSaveDeta = deta as! Int }
-            print("work\(experienceView.frame)")
+//            print("work\(experienceView.frame)")
         }else{
 //            graphView.startAnimating()
-            print("push break")
+//            print("push break")
             experienceSaveDeta = experience
             buttonArray[0].setTitle("作業する", for: UIControl.State.normal)
             buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.6, blue: 0.2, alpha: 1)
@@ -299,7 +300,7 @@ class ViewController: UIViewController {
         if width > screenWidth*4/5{
             width = screenWidth*4/5
             timer.invalidate()  //timerを破棄する.
-            print("stop")
+//            print("stop")
             reset = true
             gauge = width
         }else if width < 0{
@@ -307,7 +308,7 @@ class ViewController: UIViewController {
             timer.invalidate()  //timerを破棄する.
             reset = true
             gauge = width
-            print("stop")
+//            print("stop")
             experienceSaveDeta = experience
 //            save.set(experience, forKey: "experixence")
         }
@@ -319,7 +320,7 @@ class ViewController: UIViewController {
         }else{//休憩中
             width = gauge + CGFloat(getInterval())
         }
-        print("timeupDate:\(experience)/\((Int(screenWidth)*4/5)) = \(experience/(Int(screenWidth)*4/5))")
+//        print("timeupDate:\(experience)/\((Int(screenWidth)*4/5)) = \(experience/(Int(screenWidth)*4/5))")
 
         //アニメーション処理
         UIView.animate(withDuration: 1.0, animations: {

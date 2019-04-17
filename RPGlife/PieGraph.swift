@@ -13,7 +13,7 @@ class PieGraph: UIView {
     var _params:[Dictionary<String,AnyObject>]!
     var _end_angle:CGFloat!
     var d_end_angle:CGFloat!
-    var up: Bool = false
+    var preWork: Bool = false
     var down: Bool = false
     let viewController = ViewController()
     required init(coder aDecoder: NSCoder) {
@@ -25,17 +25,19 @@ class PieGraph: UIView {
         _params = params;
         self.backgroundColor = UIColor.clear;
         _end_angle = -CGFloat(Double.pi / 2.0);
+        print("first")
     }
     
     
     @objc func update(link: CADisplayLink){
-        let angle = -CGFloat(Double.pi*2.0 / 10.0)
-     
+        let angle = -CGFloat(Double.pi*2.0 / 1000.0)
+//        print(up)
 //        if up {
 //            link.invalidate()
-//            up = false
 //        }
-        
+        if preWork != work{
+            link.invalidate()
+        }
         if work{
             _end_angle = _end_angle + angle
             print("decleace")
@@ -59,6 +61,7 @@ class PieGraph: UIView {
         }else{
             self.setNeedsDisplay()
         }
+        preWork = work
 
     }
     
@@ -76,10 +79,9 @@ class PieGraph: UIView {
 //    }
 
     func startAnimating(){
-//        down = false
+        
         let displayLink = CADisplayLink(target: self, selector: #selector(self.update))
         displayLink.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
-        up = true
     }
     
 //    func decleaseAnimating(){
@@ -113,7 +115,7 @@ class PieGraph: UIView {
             let value = CGFloat(dic["value"] as! Float)
             end_angle = start_angle + CGFloat(Double.pi*2) * (value/max)
             
-            if(end_angle > _end_angle && up) {
+            if(end_angle > _end_angle) {
                 end_angle = _end_angle
             }
             
