@@ -1,0 +1,16 @@
+PODS:
+  - BAFluidView (0.2.4)
+
+DEPENDENCIES:
+  - BAFluidView
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - BAFluidView
+
+SPEC CHECKSUMS:
+  BAFluidView: 8769b8c92afa37a5299c551e07126d350854df95
+
+PODFILE CHECKSUM: fbc1a515fd9cd7d3b47345ae77204c5d74d917a7
+
+COCOAPODS: 1.5.0

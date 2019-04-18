@@ -15,6 +15,7 @@
 		046D62F321F0394900CBEAE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046D62F121F0394900CBEAE2 /* LaunchScreen.storyboard */; };
 		04BA6285225DDF2F009396C4 /* colorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA6284225DDF2F009396C4 /* colorCode.swift */; };
 		04BA628B225DEA6F009396C4 /* PieGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA628A225DEA6F009396C4 /* PieGraph.swift */; };
+		58263D44E829DED7C4329D2F /* Pods_RPGlife.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37508DDAA3CF8C9E3A0BD884 /* Pods_RPGlife.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,9 @@
 		046D62F421F0394900CBEAE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04BA6284225DDF2F009396C4 /* colorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colorCode.swift; sourceTree = "<group>"; };
 		04BA628A225DEA6F009396C4 /* PieGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieGraph.swift; sourceTree = "<group>"; };
+		37508DDAA3CF8C9E3A0BD884 /* Pods_RPGlife.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RPGlife.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6642D5928E77400D0602788F /* Pods-RPGlife.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RPGlife.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RPGlife/Pods-RPGlife.debug.xcconfig"; sourceTree = "<group>"; };
+		F3CE938209C48CAD1EF13081 /* Pods-RPGlife.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RPGlife.release.xcconfig"; path = "Pods/Target Support Files/Pods-RPGlife/Pods-RPGlife.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58263D44E829DED7C4329D2F /* Pods_RPGlife.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +51,8 @@
 			children = (
 				046D62E721F0394700CBEAE2 /* RPGlife */,
 				046D62E621F0394700CBEAE2 /* Products */,
+				0DA1E95C554C2F155C64863B /* Pods */,
+				E49D1CC10C1997D3932F6F24 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +80,23 @@
 			path = RPGlife;
 			sourceTree = "<group>";
 		};
+		0DA1E95C554C2F155C64863B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6642D5928E77400D0602788F /* Pods-RPGlife.debug.xcconfig */,
+				F3CE938209C48CAD1EF13081 /* Pods-RPGlife.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E49D1CC10C1997D3932F6F24 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37508DDAA3CF8C9E3A0BD884 /* Pods_RPGlife.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 046D62F721F0394900CBEAE2 /* Build configuration list for PBXNativeTarget "RPGlife" */;
 			buildPhases = (
+				41325E434331B69E3B0A310D /* [CP] Check Pods Manifest.lock */,
 				046D62E121F0394700CBEAE2 /* Sources */,
 				046D62E221F0394700CBEAE2 /* Frameworks */,
 				046D62E321F0394700CBEAE2 /* Resources */,
+				6C2F6A3C0D8C347DDD9DF2C3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -140,6 +166,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		41325E434331B69E3B0A310D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RPGlife-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C2F6A3C0D8C347DDD9DF2C3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-RPGlife/Pods-RPGlife-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BAFluidView/BAFluidView.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BAFluidView.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RPGlife/Pods-RPGlife-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		046D62E121F0394700CBEAE2 /* Sources */ = {
@@ -293,6 +358,7 @@
 		};
 		046D62F821F0394900CBEAE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6642D5928E77400D0602788F /* Pods-RPGlife.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -300,10 +366,7 @@
 				DEVELOPMENT_TEAM = 9RWL9BWXDB;
 				INFOPLIST_FILE = RPGlife/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mamo.WorkManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -314,6 +377,7 @@
 		};
 		046D62F921F0394900CBEAE2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3CE938209C48CAD1EF13081 /* Pods-RPGlife.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -321,10 +385,7 @@
 				DEVELOPMENT_TEAM = 9RWL9BWXDB;
 				INFOPLIST_FILE = RPGlife/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mamo.WorkManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

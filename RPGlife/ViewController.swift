@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import BAFluidView
+
 var work: Bool = false
 class ViewController: UIViewController {
     var barView: UIView!
@@ -30,9 +32,13 @@ class ViewController: UIViewController {
     var screenWidth:CGFloat!
     var screenHeight:CGFloat!
     var graphView:PieGraph!
+    var animeView:BAFluidView!
+    //アニメーションのViewを生成
+//    var animeView = BAFluidView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         save.set(0, forKey: "experience")//保存
         // スクリーンの横縦幅
         let screenWidth:CGFloat = self.view.frame.width
@@ -44,7 +50,7 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "333333", alpha: 1.0)
         
         
-        layout()
+//        layout()
         var params = [Dictionary<String,AnyObject>]()
 //        params.append(["value":7 as AnyObject,"color":UIColor.red])
 //        params.append(["value":5 as AnyObject,"color":UIColor.blue])
@@ -55,58 +61,46 @@ class ViewController: UIViewController {
 //        graphView.center = CGPoint(x: screenWidth/2, y: 160)
         self.view.addSubview(graphView)
         graphView.startAnimating()
-
-//        // ボタンのインスタンス生成
-//        createButton(buttonLabel: "work", buttonSize: CGSize(width:screenWidth/2,height:screenHeight/20), buttonPoint: CGPoint(x:screenWidth/2,y:screenHeight*10/20))
-//
-////        createButton(buttonLabel: "休む", buttonSize: CGSize(width:screenWidth/2,height:screenHeight/20), buttonPoint: CGPoint(x:screenWidth/2,y:screenHeight*12/20))
-//        // Do any additional setup after loading the view, typically from a nib.
-//
-//        // サイズを生成 (x, y, width, height): x,yは表示位置
-//        let rect = CGRect(x:screenWidth/10,y:Height,width:screenWidth-screenWidth/5,height:screenHeight/15)
-//        // 色を生成
-//        let bgColor = UIColor.red
-//        // 生成したサイズを使って、ビューを生成
-//        barView    = UIView(frame: rect)
-////        barView.center = CGPoint(x:screenWidth/2,y:Height)
-////        barView.frame = barView.frame
-//        // ビューの背景に色を設定
-//        barView.backgroundColor = bgColor
-//        self.view.addSubview(barView)
-//        //右上と左下を角丸にする設定
-//        barView.layer.cornerRadius = 15
-//        barView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
-//
-//        backView    = UIView(frame: rect)
-//        // ビューの背景に色を設定
-//        backView.backgroundColor =  UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
-//        self.view.insertSubview(backView, at: 0)        //右上と左下を角丸にする設定
-//        backView.layer.cornerRadius = 15
-//        backView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
-//
-//        // 生成したサイズを使って、ビューを生成
-//        experienceView = UIView(frame: CGRect(x:screenWidth/10,y:screenHeight*13/15,width:screenWidth-screenWidth/5,height:screenHeight/15))
-//        experienceView.frame.size = CGSize(width:CGFloat(experienceSaveDeta),height:screenHeight/25)
-//        // ビューの背景に色を設定
-//        experienceView.backgroundColor = UIColor(red: 0.6, green: 0.2, blue: 0.4, alpha: 1.0)
-//        self.view.addSubview(experienceView)
-//        //右上と左下を角丸にする設定
-//        experienceView.layer.cornerRadius = 15
-//        experienceView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
-//               print(experienceView.frame)
-//
-//        // 生成したサイズを使って、ビューを生成
-//        experienceBackView = UIView(frame: CGRect(x:screenWidth/10,y:screenHeight*13/15,width:screenWidth-screenWidth/5,height:screenHeight/15))
-//        experienceBackView.frame.size = CGSize(width:screenWidth*4/5,height:screenHeight/25)
-//        // ビューの背景に色を設定
-//        experienceBackView.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.3)
-//        self.view.insertSubview(experienceBackView, at: 0)
-//        //右上と左下を角丸にする設定
-//        experienceBackView.layer.cornerRadius = 15
-//        experienceBackView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
-//
-//
-//        createLabel(labelRect: CGRect(x: screenWidth/2,y: screenHeight*5/8,width: screenWidth/4 ,height:screenWidth/4), labelText: "0")
+//        let animeView = BAFluidView(frame: self.view.frame)
+        animeView = BAFluidView(frame:self.view.frame,startElevation: 0.0)
+        //波の高さを設定(0~1.0)
+//        animeView.fill(to: 0.8)
+        //波の境界線の色
+        animeView.strokeColor = .white
+        animeView.fillRepeatCount = 1
+        animeView.fillAutoReverse = false
+        animeView.fillDuration = 10
+        animeView.fill(to: 0.3)
+        //波の色
+        animeView.fillColor = UIColor(red: 0.274, green: 0.288, blue: 0.297, alpha: 1.0)
+        
+//        animeView.fillDuration = 10
+        animeView.lineWidth = 1
+        //        view.fillRepeatCount = 1;
+//        animeView.startAnimation()
+//        animeView.startAnimation()
+        animeView.startTiltAnimation()
+//        self.view.addSubview(animeView)
+        self.view.addSubview(animeView)
+        
+        // ボタン
+        let btn = UIButton()
+        btn.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        btn.backgroundColor = .blue
+        btn.setTitle("ボタン" , for: .normal)
+        btn.center = CGPoint(x:self.view.frame.width/2, y:self.view.frame.height/2)
+        btn.addTarget(self, action: #selector(self.btnAction(sender:)), for: .touchUpInside)
+        self.view.addSubview(btn)
+    }
+    @IBAction func btnAction(sender: UIButton){
+            print("test")
+        animeView.removeFromSuperview()
+        //         animeView = BAFluidView(frame:self.view.frame,startElevation: 0.4)
+//         animeView.keepStationary()
+//        animeView.
+//        animeView = BAFluidView(frame:self.view.frame,startElevation: 0.3)
+//        animeView.fill(to: 0.9)
+//        animeView.lineWidth = 10
     }
 
     func layout(){
@@ -211,6 +205,7 @@ class ViewController: UIViewController {
     
     //ボタンアクション
     @IBAction func workBtn(sender: AnyObject) {
+        
         work = !work
 //        up = true
         graphView.startAnimating()

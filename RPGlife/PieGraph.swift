@@ -16,6 +16,7 @@ class PieGraph: UIView {
     var preWork: Bool = false
     var ready: Bool = false
     let viewController = ViewController()
+    var const:CGFloat = 1.0
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -31,16 +32,17 @@ class PieGraph: UIView {
     
     @objc func update(link: CADisplayLink){
         let angle = -CGFloat(Double.pi*2.0 / 100.0)
+        
 //        print("\(String(describing: _end_angle))","\(CGFloat(Double.pi))")
 //        if up {
 //            link.invalidate()
 //        }
         if work{
-            _end_angle = _end_angle + angle
+            _end_angle = _end_angle + angle * const * 0.1
             print("decleace")
             
         }else {//ボタンを押していない時
-            _end_angle = _end_angle - angle
+            _end_angle = _end_angle - angle * const
             print("increase")
         }
 
@@ -62,6 +64,7 @@ class PieGraph: UIView {
             self.setNeedsDisplay()
 
             if ready{
+            const = 0.1
                 
             }else if preWork != work{
                 print("inOut")
