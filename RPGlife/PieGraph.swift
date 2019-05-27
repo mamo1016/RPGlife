@@ -4,7 +4,7 @@
 //
 //  Created by 上田　護 on 2019/04/10.
 //  Copyright © 2019 mamoru.ueda. All rights reserved.a
-//
+//ss
 
 import UIKit
 
@@ -15,7 +15,8 @@ class PieGraph: UIView {
     var d_end_angle:CGFloat!
     var preWork: Bool = false
     var ready: Bool = false
-    let viewController = ViewController()
+    //    let viewController = ViewController()s
+    
     var const:CGFloat = 1.0
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,7 +27,7 @@ class PieGraph: UIView {
         _params = params;
         self.backgroundColor = UIColor.clear;
         _end_angle = -CGFloat(Double.pi / 2.0);
-        print("first")
+//        print("first")
     }
     
     
@@ -38,44 +39,42 @@ class PieGraph: UIView {
 //            link.invalidate()
 //        }
         if work{
-            _end_angle = _end_angle + angle * const * 0.1
-            print("decleace")
-            
+            _end_angle = _end_angle + angle * const// * 0.1
+//            print("decleace")
         }else {//ボタンを押していない時
             _end_angle = _end_angle - angle * const
-            print("increase")
+//            print("increase")
+//            UserDefaults.standard.set(Double(0.8), forKey: "saveData")
+            
         }
 
         if(_end_angle > CGFloat(Double.pi*3/2)) {
 //            d_end_angle = _end_angle
             _end_angle = CGFloat(Double.pi*3/2)
             ready = true
-            print("out1")
+//            print("out1")
             //終了
             link.invalidate()
         } else if _end_angle < -CGFloat(Double.pi/2){
             _end_angle = -CGFloat(Double.pi/2)
             ready = true
-            print("out2")
+//            print("out2")
             //終了
             link.invalidate()
         }else{
-            print("in")
+//            print("in")
             self.setNeedsDisplay()
 
             if ready{
             const = 0.1
                 
             }else if preWork != work{
-                print("inOut")
+//                print("inOut")
                 link.invalidate()
-
             }
             ready = false
-
         }
         preWork = work
-
     }
     
 //    @objc func downdate(link: CADisplayLink){
@@ -131,15 +130,14 @@ class PieGraph: UIView {
             if(end_angle > _end_angle) {
                 end_angle = _end_angle
             }
-            
-            
+
 //            var color:UIColor = dic["color"] as! UIColor
             
             context.move(to: CGPoint(x: x, y: y))
             context.addArc(center:  CGPoint(x:x,y:y), radius: radius, startAngle: start_angle, endAngle: end_angle, clockwise: false)
 //            AddArc(context, x, y, radius,  start_angle, end_angle, 0);
             //ここのコメントアウトを解除すると、中くりぬき
-            context.addArc(center: CGPoint(x:x,y:y), radius: radius/2, startAngle: end_angle, endAngle: start_angle, clockwise: true)//context, x, y, radius/2,  end_angle, start_angle, 1);
+//            context.addArc(center: CGPoint(x:x,y:y), radius: radius/2, startAngle: end_angle, endAngle: start_angle, clockwise: true)//context, x, y, radius/2,  end_angle, start_angle, 1);
             context.setFillColor((self.tintColor.cgColor))
             context.closePath();
             context.fillPath();

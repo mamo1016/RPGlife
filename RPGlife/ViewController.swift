@@ -11,6 +11,7 @@ import BAFluidView
 
 var work: Bool = false
 class ViewController: UIViewController {
+    
     var barView: UIView!
     var backView: UIView!
     var experienceView: UIView!
@@ -20,7 +21,7 @@ class ViewController: UIViewController {
     var timeCount: Bool = false
     var start: Date = Date()
     var width:CGFloat!
-    var timer: Timer!
+    var timer: Timer = Timer()
     var gauge: CGFloat!
     var reset: Bool = false
     
@@ -33,12 +34,18 @@ class ViewController: UIViewController {
     var screenHeight:CGFloat!
     var graphView:PieGraph!
     var animeView:BAFluidView!
+
+    var count: Float = 0.0
+    var fillNum: Float = 1200
+    var durationNum: Float = 1
+    //    var timer: Timer = Timer()
+    
     //アニメーションのViewを生成
 //    var animeView = BAFluidView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        count = Float(UserDefaults.standard.double(forKey: "saveData"))
         save.set(0, forKey: "experience")//保存
         // スクリーンの横縦幅
         let screenWidth:CGFloat = self.view.frame.width
@@ -59,29 +66,39 @@ class ViewController: UIViewController {
         graphView = PieGraph(frame: CGRect(x: screenWidth/2-screenWidth*2/5, y: screenWidth/2 - screenWidth*2/5, width: screenWidth*4/5, height: screenWidth*4/5), params: params)
 //        graphView.center = CGPoint(x:screenWidth/2,y:screenHeight/2)
 //        graphView.center = CGPoint(x: screenWidth/2, y: 160)
+        if let data:Double = UserDefaults.standard.double(forKey: "saveData"){//データがあった時
+            print("data:\(data)")
+            createWave(startElevation: 0.0, toElevation: NSNumber(value: data/Double(fillNum)))
+        }else{
+            createWave(startElevation: 0.0, toElevation: 0.0)
+        }
+        durationNum = fillNum
         self.view.addSubview(graphView)
         graphView.startAnimating()
 //        let animeView = BAFluidView(frame: self.view.frame)
-        animeView = BAFluidView(frame:self.view.frame,startElevation: 0.0)
-        //波の高さを設定(0~1.0)
-//        animeView.fill(to: 0.8)
-        //波の境界線の色
-        animeView.strokeColor = .white
-        animeView.fillRepeatCount = 1
-        animeView.fillAutoReverse = false
-        animeView.fillDuration = 10
-        animeView.fill(to: 0.3)
-        //波の色
-        animeView.fillColor = UIColor(red: 0.274, green: 0.288, blue: 0.297, alpha: 1.0)
         
+        
+        //保存したき経験値を取り出す
+//        animeView = BAFluidView(frame:self.view.frame,startElevation: 0.4/*保存した値を入れる*/)
+//        //波の高さを設定(0~1.0)
+////        animeView.fill(to: 0.8)
+//        //波の境界線の色
+//        animeView.strokeColor = .white
+//        animeView.fillRepeatCount = 1
+//        animeView.fillAutoReverse = false
 //        animeView.fillDuration = 10
-        animeView.lineWidth = 1
-        //        view.fillRepeatCount = 1;
-//        animeView.startAnimation()
-//        animeView.startAnimation()
-        animeView.startTiltAnimation()
+//        animeView.fill(to: 0.3)
+//        //波の色
+//        animeView.fillColor = UIColor(red: 0.274, green: 0.288, blue: 0.297, alpha: 1.0)
+//
+////        animeView.fillDuration = 10
+//        animeView.lineWidth = 1
+//        //        view.fillRepeatCount = 1;
+////        animeView.startAnimation()
+////        animeView.startAnimation()
+//        animeView.startTiltAnimation()
+////        self.view.addSubview(animeView)
 //        self.view.addSubview(animeView)
-        self.view.addSubview(animeView)
         
         // ボタン
         let btn = UIButton()
@@ -92,15 +109,89 @@ class ViewController: UIViewController {
         btn.addTarget(self, action: #selector(self.btnAction(sender:)), for: .touchUpInside)
         self.view.addSubview(btn)
     }
+    
     @IBAction func btnAction(sender: UIButton){
-            print("test")
+        work = !work
+
         animeView.removeFromSuperview()
-        //         animeView = BAFluidView(frame:self.view.frame,startElevation: 0.4)
-//         animeView.keepStationary()
-//        animeView.
-//        animeView = BAFluidView(frame:self.view.frame,startElevation: 0.3)
-//        animeView.fill(to: 0.9)
-//        animeView.lineWidth = 10
+//        createWave(startElevation: 0.5, toElevation: 1.0)
+        
+        if work{//ワーク中
+            start_stop()
+            if let data:Double = UserDefaults.standard.double(forKey: "saveData"){
+                createWave(startElevation: NSNumber(value: data/Double(fillNum)), toElevation: 1.0)
+            }else{
+                createWave(startElevation: 0.0, toElevation: 1.0)
+            }
+        }else if !work{//休憩中
+            start_stop()
+            UserDefaults.standard.set(count, forKey: "saveData")
+            print(count)
+            createWave(startElevation: NSNumber(value: count/fillNum), toElevation: NSNumber(value: count/fillNum))//この位置でウェーブを止める
+        }
+        graphView.startAnimating()
+    }
+    
+    @objc func up(){
+        //countを0.01足す
+        count = count + 0.01
+        if count > fillNum{
+            count = 0
+            animeView.removeFromSuperview()
+            createWave(startElevation: NSNumber(value: count/fillNum), toElevation: NSNumber(value: count/fillNum))//この位置でウェーブを止める
+            print("time")
+        }else{
+//            createWave(startElevation: NSNumber(value: count/durationNum), toElevation: NSNumber(value: count/durationNum))//この位置でウェーブを止める
+        }
+        print("count=\(count),duration= \(fillNum)")
+    }
+    
+    func start_stop() {
+        if !timer.isValid {
+            //タイマーが動作していないとき
+            timer = Timer.scheduledTimer(timeInterval: 0.01,
+                                         target: self,
+                                         selector: #selector(self.up),
+                                         userInfo: nil,
+                                         repeats: true
+            )
+        }else if timer.isValid {
+            //タイマーが動作しているとき
+            timer.invalidate()
+        }
+    }
+    
+    @IBAction func test() {
+//        count = 0
+        animeView.keepStationary()
+
+    }
+    
+    
+    func createWave(startElevation: NSNumber, toElevation: NSNumber){
+        
+        //保存したき経験値を取り出す
+        animeView = BAFluidView(frame:self.view.frame,startElevation: startElevation /*保存した値を入れる*/)
+        //波の高さを設定(0~1.0)
+        //        animeView.fill(to: 0.8)
+        //波の境界線の色
+        animeView.strokeColor = .white
+        animeView.fillRepeatCount = 1
+        animeView.fillAutoReverse = false
+        animeView.fillDuration = Double(durationNum)//到達時間
+        animeView.fill(to: toElevation)//ここまであげる
+        //波の色
+        animeView.fillColor = UIColor(red: 0.274, green: 0.288, blue: 0.297, alpha: 1.0)
+        
+        //        animeView.fillDuration = 10
+        animeView.lineWidth = 1
+        //        view.fillRepeatCount = 1;
+        //        animeView.startAnimation()
+        //        animeView.startAnimation()
+        animeView.startTiltAnimation()
+        //        self.view.addSubview(animeView)
+        self.view.insertSubview(animeView, at: 0)
+//        addSubview(animeView)
     }
 
     func layout(){
@@ -129,7 +220,7 @@ class ViewController: UIViewController {
         barView.layer.cornerRadius = 15
         barView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner]
         
-        backView    = UIView(frame: rect)
+        backView = UIView(frame: rect)
         // ビューの背景に色を設定
         backView.backgroundColor =  UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
         self.view.insertSubview(backView, at: 0)        //右上と左下を角丸にする設定
@@ -205,37 +296,37 @@ class ViewController: UIViewController {
     
     //ボタンアクション
     @IBAction func workBtn(sender: AnyObject) {
-        
-        work = !work
-//        up = true
-        graphView.startAnimating()
-        if work {
-//            graphView.decleaseAnimating()
-//            print("push work")
-            buttonArray[0].setTitle("休む", for: UIControl.State.normal)
-            buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.4, blue: 0.1, alpha: 1)
-//            if let deta = save.object(forKey: "experience") { experienceSaveDeta = deta as! Int }
-//            print("work\(experienceView.frame)")
-        }else{
-//            graphView.startAnimating()
-//            print("push break")
-            experienceSaveDeta = experience
-            buttonArray[0].setTitle("作業する", for: UIControl.State.normal)
-            buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.6, blue: 0.2, alpha: 1)
-//            save.set(experience, forKey: "experience")//保存
-        }
-//        timeCount = !timeCount
-//        print("Debug workBtn:\(timeCount)")
-        reset = true
-        //timerが止まっているなら.
-        if timer == nil || timer.isValid == false {
-//            startFlag = true
-            timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)  //timerを生成する.
-        }else{  //休憩する時
-//            timer.invalidate()  //timerを破棄する.
-            gauge = width
-//            getInterval()
-        }
+//
+//        work = !work
+////        up = true
+//        graphView.startAnimating()
+//        if work {
+////            graphView.decleaseAnimating()
+////            print("push work")
+//            buttonArray[0].setTitle("休む", for: UIControl.State.normal)
+//            buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.4, blue: 0.1, alpha: 1)
+////            if let deta = save.object(forKey: "experience") { experienceSaveDeta = deta as! Int }
+////            print("work\(experienceView.frame)")
+//        }else{
+////            graphView.startAnimating()
+////            print("push break")
+//            experienceSaveDeta = experience
+//            buttonArray[0].setTitle("作業する", for: UIControl.State.normal)
+//            buttonArray[0].backgroundColor = UIColor.init(red:0.1, green: 0.6, blue: 0.2, alpha: 1)
+////            save.set(experience, forKey: "experience")//保存
+//        }
+////        timeCount = !timeCount
+////        print("Debug workBtn:\(timeCount)")
+//        reset = true
+//        //timerが止まっているなら.
+//        if timer == nil || timer.isValid == false {
+////            startFlag = true
+//            timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.timerUpdate), userInfo: nil, repeats: true)  //timerを生成する.
+//        }else{  //休憩する時
+////            timer.invalidate()  //timerを破棄する.
+//            gauge = width
+////            getInterval()
+//        }
     }
     
 //    //ボタンアクション
